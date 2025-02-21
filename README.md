@@ -59,7 +59,7 @@ Nếu nó trả về `Restricted`, nghĩa là script PowerShell bị chặn.
 
 #### Step 1: Tải file `.exe`
 
-Vào [Mosquitto](https://mosquitto.org/download/)
+Tải tại [Mosquitto](https://mosquitto.org/download/)
 
 #### Step 2: Thêm `Mosquitto` vào System PATH
 
@@ -76,12 +76,89 @@ Vào [Mosquitto](https://mosquitto.org/download/)
 
 #### Step 1: Tìm địa chỉ IP của thiết bị chạy `Mosquitto` trong cmd
 
+**Trên `Windows`:**
+
     ipconfig
+
+**Trên `macOS/Linux`:**
+
+    ifconfig
 
 #### Step 2: Chạy `Mosquitto Broker`
 
     mosquitto -v
 
-#### Step 3: Tạo `pub.py` và đổi `IP Broker`
+#### Step 3: Tạo `pub.py` và đổi `IP Broker` trên thiết bị 1
 
-Ví dụ: ![1](./doc/pub.png)
+Ví dụ: ![pub.py](./doc/pub.png)
+
+#### Step 4: Tạo `sub.py` trên thiết bị 2
+
+Ví dụ: ![sub.py](./doc/sub.png)
+
+#### Step 5: Chạy chương trình
+
+**Trên thiết bị gửi (Publisher)**
+
+    python pub.py
+
+**Trên thiết bị nhận (Subscriber)**
+
+    python sub.py
+
+## 5. Lỗi `ConnectionRefusedError: [WinError 10061]`
+
+#### Step 1: Kiểm tra xem `Mosquitto` có đang chạy không
+
+    mosquitto -v
+
+Nếu `Mosquitto` đang chạy, bạn sẽ thấy log như sau:
+
+    mosquitto version ... running
+
+#### Step 2: Kiểm tra địa chỉ IP của máy chạy `Mosquitto`
+
+#### Step 3: Mở cổng `1883` trong Windows Firewall
+
+Mở `Win + X → Windows Terminal (Admin)`
+
+    netsh advfirewall firewall add rule name="MQTT" dir=in action=allow protocol=TCP localport=1883
+
+#### Step 4: Kiểm tra kết nối từ Client
+
+Trên máy client
+
+    telnet 192.168.1.187 1883
+
+`192.168.1.187` là IP của máy chạy Mosquitto
+Nếu hiện màn hình trống, port 1883 đã mở.
+🚨 Nếu báo lỗi "Could not open connection", Mosquitto chưa mở hoặc bị firewall chặn.
+
+#### Step 5: Sửa file cấu hình `Mosquitto` (nếu cần)
+
+**Trên `Windows`:**
+
+-   Mở `C:\Program Files\mosquitto\mosquitto.conf` bằng `Notepad (Run as administrator)`.
+-   Thêm dòng sau vào cuối file:
+
+        listener 1883
+        allow_anonymous true
+
+-   Lưu file và khởi động lại Mosquitto:
+
+        mosquitto -c "C:\Program Files\mosquitto\mosquitto.conf"
+
+**Trên `Linux`:**
+
+-   Sửa file
+
+        sudo nano /etc/mosquitto/mosquitto.conf
+
+-   Thêm dòng sau vào cuối file:
+
+        listener 1883
+        allow_anonymous true
+
+-   Lưu file và khởi động lại Mosquitto:
+
+        sudo systemctl restart mosquitto
