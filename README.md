@@ -12,20 +12,21 @@ Thay `myenv` bằng tên thư mục bạn muốn đặt cho môi trường ảo.
 
 #### Step 3: Kích hoạt môi trường ảo
 
-**Trên `Windows`:**
+-   Trên `Windows`:
 
-    myenv\Scripts\activate
+        myenv\Scripts\activate
 
-**Trên `macOS/Linux`:**
+-   Trên `macOS/Linux`:
 
-    source myenv/bin/activate
+        source myenv/bin/activate
 
 #### Step 4: Cài đặt các gói trong môi trường ảo
 
     pip install ...
 
-`django`
-`paho-mqtt`
+-   `django`
+
+-   `paho-mqtt`
 
 #### Step 5: Thoát khỏi môi trường ảo
 
@@ -63,10 +64,10 @@ Tải tại [Mosquitto](https://mosquitto.org/download/)
 
 #### Step 2: Thêm `Mosquitto` vào System PATH
 
--   Nhấn `Win + R`, gõ `sysdm.cpl`, nhấn `Enter`
--   Chuyển sang tab `Advanced`, bấm vào `Environment Variables`
--   Trong phần `System variables`, tìm và chọn `Path`, rồi bấm `Edit`
--   Bấm `New`, nhập đường dẫn thư mục `Mosquitto`, ví dụ: `C:\Program Files\Mosquitto`
+1. Nhấn `Win + R`, gõ `sysdm.cpl`, nhấn `Enter`
+2. Chuyển sang tab `Advanced`, bấm vào `Environment Variables`
+3. Trong phần `System variables`, tìm và chọn `Path`, rồi bấm `Edit`
+4. Bấm `New`, nhập đường dẫn thư mục `Mosquitto`, ví dụ: `C:\Program Files\Mosquitto`
 
 #### Step 3: Chạy `Mosquitto Broker` tại cmd
 
@@ -76,35 +77,35 @@ Tải tại [Mosquitto](https://mosquitto.org/download/)
 
 #### Step 1: Tìm địa chỉ IP của thiết bị chạy `Mosquitto` trong cmd
 
-**Trên `Windows`:**
+-   Trên `Windows`:
 
-    ipconfig
+        ipconfig
 
-**Trên `macOS/Linux`:**
+-   Trên `macOS/Linux`:
 
-    ifconfig
+        ifconfig
 
 #### Step 2: Chạy `Mosquitto Broker`
 
     mosquitto -v
 
-#### Step 3: Tạo `pub.py` và đổi `IP Broker` trên thiết bị 1
+#### Step 3: Tạo `pub.py` và đổi `IP Broker` trên `thiết bị 1`
 
 Ví dụ: ![pub.py](./doc/pub.png)
 
-#### Step 4: Tạo `sub.py` trên thiết bị 2
+#### Step 4: Tạo `sub.py` trên `thiết bị 2`
 
 Ví dụ: ![sub.py](./doc/sub.png)
 
 #### Step 5: Chạy chương trình
 
-**Trên thiết bị gửi (Publisher)**
+-   Trên thiết bị gửi (Publisher)
 
-    python pub.py
+        python pub.py
 
-**Trên thiết bị nhận (Subscriber)**
+-   Trên thiết bị nhận (Subscriber)
 
-    python sub.py
+          python sub.py
 
 ## 5. Lỗi `ConnectionRefusedError: [WinError 10061]`
 
@@ -126,39 +127,40 @@ Mở `Win + X → Windows Terminal (Admin)`
 
 #### Step 4: Kiểm tra kết nối từ Client
 
-Trên máy client
+-   Trên máy client
 
-    telnet 192.168.1.187 1883
+        telnet 192.168.1.187 1883
 
-`192.168.1.187` là IP của máy chạy Mosquitto
-Nếu hiện màn hình trống, port 1883 đã mở.
-🚨 Nếu báo lỗi "Could not open connection", Mosquitto chưa mở hoặc bị firewall chặn.
+    `192.168.1.187` là IP của máy chạy Mosquitto
+
+    -   Nếu hiện màn hình trống, port 1883 đã mở.
+    -   Nếu báo lỗi "`Could not open connection`", Mosquitto chưa mở hoặc bị firewall chặn.
 
 #### Step 5: Sửa file cấu hình `Mosquitto` (nếu cần)
 
-**Trên `Windows`:**
+-   Trên `Windows`:
 
--   Mở `C:\Program Files\mosquitto\mosquitto.conf` bằng `Notepad (Run as administrator)`.
--   Thêm dòng sau vào cuối file:
+    -   Mở `C:\Program Files\mosquitto\mosquitto.conf` bằng `Notepad (Run as administrator)`.
+    -   Thêm dòng sau vào cuối file:
 
-        listener 1883
-        allow_anonymous true
+            listener 1883
+            allow_anonymous true
 
--   Lưu file và khởi động lại Mosquitto:
+    -   Lưu file và khởi động lại Mosquitto:
 
-        mosquitto -c "C:\Program Files\mosquitto\mosquitto.conf"
+            mosquitto -c "C:\Program Files\mosquitto\mosquitto.conf"
 
-**Trên `Linux`:**
+-   Trên `Linux`:
 
--   Sửa file
+    -   Sửa file
 
-        sudo nano /etc/mosquitto/mosquitto.conf
+            sudo nano /etc/mosquitto/mosquitto.conf
 
--   Thêm dòng sau vào cuối file:
+    -   Thêm dòng sau vào cuối file:
 
-        listener 1883
-        allow_anonymous true
+            listener 1883
+            allow_anonymous true
 
--   Lưu file và khởi động lại Mosquitto:
+    -   Lưu file và khởi động lại Mosquitto:
 
-        sudo systemctl restart mosquitto
+            sudo systemctl restart mosquitto
